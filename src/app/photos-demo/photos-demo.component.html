@@ -1,0 +1,8 @@
+
+    <!-- <div *ngIf="showLoader" class="loader-wrapper loader-center">
+                        <div class="loader"></div>
+                    </div> -->
+    <rt-photos (imageAdded)="handleImageAdded($event)" [isAddPolicy]="isAddPolicy" (allImagesSelected)="handleSelectAll($event)"
+        (allImagesUnselected)="handleUnselectAll()" (imageSelected)="handleImageSelected($event)" (favouriteSelected)="handleMainImage($event)"
+        [imagesInput]="imagesInput" [imageUrlsAdded]="imageUrlsAdded" (imagesDeleted)="handleImageDelete($event)" [isReadOnly]="isReadOnly">
+    </rt-photos>

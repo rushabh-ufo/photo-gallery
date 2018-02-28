@@ -1,0 +1,150 @@
+<div class="content-wrapper inner-content">
+  <div class="button-panel inline-content padding-bottom-15" *ngIf="!isMultimediaModule || (images.length > 0 && images.length !== deleteImageCount)">
+    <div class="file-upload margin-right-7">
+      <button type="button" class="btn btn-primary icon-left" [disabled]="isReadOnly"><i class="icon-cloud-upload"></i><span>{{languageObject['commonUploadPhotos']}}</span></button>
+      <input type="file" (change)="previewFile()" multiple title="{{languageObject['commonUploadPhotos']}}" id="fileUploadBox" [disabled]="isReadOnly">
+    </div>
+    <button class="btn btn-outline hover-fill btn-danger icon-left" *ngIf="selectedImages.length > 0" data-toggle="modal" data-target="#ob-delete-data" ><i class="icon-bin"></i>{{languageObject['listDelete']}}</button>
+    <!-- <button class="btn btn-outline hover-fill btn-danger icon-left" *ngIf="selectedImages.length > 0 && !isMultimediaModule" (click)="markAsDeleted()"><i class="icon-bin"></i>{{languageObject['listDelete']}}</button> -->
+    <button class="btn btn-default btn-outline icon-left" *ngIf="selectedImages.length > 0" (click)="downloadImage()"><i class="icon-download"></i>{{languageObject['commonDownload']}}</button>
+    <!-- <div class="dropdown margin-left-10">
+      <a class="dropdown-toggle btn btn-default btn-outline btn-circle" id="ui-ob-selection-dropdown" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="icon-menu-dots"></i></a>
+      <div class="dropdown-menu" aria-labelledby="ui-ob-selection-dropdown">
+        <ul>
+          <li><a class="dropdown-item" (click)="selectAllImages()">{{languageObject['commonSelectAll']}}</a></li>
+          <li><a class="dropdown-item" (click)="unselectAllImages()">{{languageObject['commonClearSelection']}}</a></li>
+        </ul>
+      </div>
+    </div> -->
+    <div class="photo-counter margin-left-10">
+      <p class="font-italic" *ngIf="selectedImages.length > 0">
+        <span>{{selectedImages.length}}</span>
+        <span *ngIf="selectedImages.length == 1">{{languageObject['commonSinglePhotoSelected']}}</span>
+        <span *ngIf="selectedImages.length > 1">{{languageObject['commonPhotosSelected']}}</span>
+      </p>
+    </div>
+  </div>
+  <!-- <div class="select-wrapper margin-bottom-20" *ngIf="images.length > 0 && images.length !== deleteImageCount">
+    <div class="input-check">
+      <input id="selectAllBox" [checked]="applySelectAll" class="" type="checkbox" (click)="selectAllImages()" />
+      <label>{{languageObject['commonSelectAll']}}</label>
+    </div>
+  </div> -->
+  <div class="wrapper-child no-padding file-upload-wrapper">
+    <div class="droppable gallery-wrapper" (dragover)="makeDroppable($event)" (dragleave)="makeDroppable($event)" (drop)="makeDroppable($event)"
+      *ngIf="images.length > 0">
+      <div class="select-wrapper margin-bottom-20" *ngIf="images.length > 0 && images.length !== deleteImageCount">
+        <div class="input-check">
+          <input id="selectAllBox" [checked]="applySelectAll" class="" type="checkbox" (click)="selectAllImages()" [disabled]="isReadOnly"/>
+          <label>{{languageObject['commonSelectAll']}}</label>
+        </div>
+      </div>
+      <ng-container *ngFor="let image of images">
+        <div class="gallery-image" *ngIf="!image.IsDeleted" [ngClass]="checkIdExists(image.Id, image.TrackingId) ? 'selected' : ''">
+          <div class="image-box">
+            <!-- images for modules other then multimedia -->
+            <img *ngIf="image.ImageEncoded && !image.IsDeleted" src={{image.ImageEncoded}} title="" />
+            <img *ngIf="image.ImageLink && !image.IsDeleted" src={{image.ImageLink}} title="" />
+          </div>
+          <div class="overlay">
+            <a class="zoom-btn" (click)="openOverlay(image)"><i class="icon-search"></i></a>
+          </div>
+          <div class="image-buttons" [ngClass]="{'view-buttons' : selectedImages.length > 0, 'favorited' : image.IsFavorite}">
+            <div class="form-group">
+              <div class="input-check">
+                <input type="checkbox" (click)="setSelectedImages(image)" [checked]="selectedImages.indexOf(image.Id) !== -1 || selectedImages.indexOf(image.TrackingId) !== -1" [disabled]="isReadOnly">
+                <label></label>
+              </div>
+            </div>
+            <a class="favorite-btn ob-tooltip tooltip-bottom-right" [ngClass]="isReadOnly ? 'disabled' : ''" (click)="setFavouriteImage(image)">
+            <i class="icon-star-filled"></i>
+            <span class="tooltip-text adjustane margin-tl-10" *ngIf="image.IsFavorite">{{languageObject['commonDisableMain']}}</span>
+            <span class="tooltip-text adjustane margin-tl-10" *ngIf="!image.IsFavorite">{{languageObject['commonDefineMain']}}</span>
+          </a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="dragdrop-zone" *ngIf="((images.length === 0 || (images.length === deleteImageCount)) && isMultimediaModule === false)">
+      <p>{{languageObject['commonImageTypePrefrencePt1']}} <span>{{languageObject['commonImageTypePrefrencePt2']}}</span> {{languageObject['commonImageTypePrefrencePt3']}}</p>
+      <!-- <div>
+            <div *ngFor="let i of dummyImages; let index = index">
+              <img src={{images[index]?.ImageEncoded}} style="max-height: 150px; max-width: 150px;border:1px solid black" alt="../../assets/smiley.gif"/>
+              <span (click)="setFavouriteImage(image)">{{images[index]?.IsFavorite}}</span>
+              <span><input type="checkbox" (click)="setSelectedImages(image)" [checked]="selectedImages.indexOf(images[index]?.UID) !== -1 || selectedImages.indexOf(images[index]?.TrackingId) !== -1"></span>
+              <span *ngIf="noOfFiles > 0"> {{index +1 }}/{{noOfFiles}}</span>
+            </div>
+          </div> -->
+    </div>
+
+    <div class="row no-gutters full-display-block align-items-center" *ngIf="isMultimediaModule && (images.length === 0 || images.length === deleteImageCount) && selectedEntity" (dragover)="makeDroppable($event)" (dragleave)="makeDroppable($event)"
+      (drop)="makeDroppable($event)">
+      <div class="no-item-block col text-center">
+        <i class="icon-folder"></i>
+        <h4>This <span>{{selectedEntity === 'RoomType' ? 'Room type' : selectedEntity}}</span> have no photos.</h4>
+        <p class="secondary-text no-margin">Use the button "Upload Photo" or place here your items.</p>
+        <p class="secondary-text">(Supported file formats: *.jpg *.jpeg *.jpe *.png)</p>
+        <div class="file-upload margin-top-10 w120 inline-element">
+            <button type="button" class="btn btn-primary icon-left" [disabled]="isReadOnly">
+              <i class="icon-cloud-upload"></i>
+              <span>{{languageObject['commonUploadPhotos']}}</span>
+            </button>
+            <input type="file" (change)="previewFile()"  multiple title="{{languageObject['commonUploadPhotos']}}" id="fileUploadBox" [disabled]="isReadOnly">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="image-viewer show" *ngIf="showOverlay">
+  <div class="button-panel">
+    <button class="btn btn-danger btn-outline btn-delete hover-fill icon-left" (click)="setSelectedImages(imageInOverlay, 'overlay')" [disabled]="isReadOnly"><i class="icon-bin"></i><span>{{languageObject['listDelete']}}</span></button>
+    <button class="btn btn-default  btn-outline btn-rounded icon-left" (click)="setSelectedImages(imageInOverlay, 'overlay', 'download')" [disabled]="isReadOnly"><i class="icon-download"></i><span>{{languageObject['commonDownload']}}</span></button>
+    <button class="btn-favorite btn btn-default btn-outline btn-circle ob-tooltip tooltip-bottom-left no-margin-right" (click)="setFavouriteImage(imageInOverlay)"
+      [ngClass]="imageInOverlay.IsFavorite ? 'favorited':'' " [disabled]="isReadOnly">
+      <i class="icon-star-filled"></i>
+      <span class="tooltip-text margin-tr-5" *ngIf="imageInOverlay.IsFavorite">{{languageObject['commonDisableMain']}}</span>
+      <span class="tooltip-text margin-tr-5" *ngIf="!imageInOverlay.IsFavorite">{{languageObject['commonDefineMain']}}</span>
+    </button>
+    <button class="btn btn-default btn-circle btn-transparent text-white btn-close ob-tooltip tooltip-bottom-left" (click)="closeOverlay($event)">
+      <i class="icon-cross"></i>
+      <span class="tooltip-text margin-tr-5">{{languageObject['commonClose']}}</span>
+    </button>
+  </div>
+  <div class="image-slider full-height">
+    <img #overlayImage src={{overlayImageSrc}} alt="">
+  </div>
+  <div class="slider-navigation">
+    <button class="btn btn-default btn-circle btn-prev" (click)="previousImage()"><i class="icon-arrow-left"></i></button>
+    <button class="btn btn-default btn-circle btn-next" (click)="nextImage()"><i class="icon-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- <div class="modal modal-danger fade" id="ob-photos-error-data" tabindex="-1" role="dialog" aria-labelledby="refreshModalLabel" aria-hidden="true">
+    <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row no-gutters full-width">
+                        <div class="modal-icon">
+                            <i class="icon-close"></i>
+                        </div>
+                        <div class="col modal-text">
+                            <h4>{{errorObject['ErrorType']}}</h4>
+                            <p>{{errorObject['ErrorCode']}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    {{errorObject['Description']}}
+                </div>
+                <div class="modal-footer no-gutters">
+                    <button type="button" class="btn btn-success hover-fill icon-left" data-dismiss="modal"><i class="icon-checkmark"></i>Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" class="control-btn decrement-btn hide" #chkError [attr.data-target]="'#ob-photos-error-data'" data-toggle="modal"></button> -->
+

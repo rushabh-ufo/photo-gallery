@@ -1,0 +1,327 @@
+// Theme Colors
+$theme-color: #0C83D9;
+$gold: #CF990D;
+$secondary-color: $gold;
+$secondary-text-color: #797F86;
+
+// Adds a browser prefix to the property
+@mixin css3-prefix($property, $value) {
+  -webkit-#{$property}: #{$value};
+  -moz-#{$property}: #{$value};
+  -ms-#{$property}: #{$value};
+  #{$property}: #{$value};
+}
+
+// Transition
+@mixin transition($properties...) {
+  @include css3-prefix('transition', $properties);
+}
+
+// Flex
+@mixin flex() {
+  -ms-flex-wrap: wrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+// Outline Button
+$btn-outline-background-color: #FFFFFF;
+$btn-outline-font-color: #000000;
+$btn-outline-border-color: #CCCCCC;
+$btn-outline-box-shadow-color: #C8CED1;
+
+.inline-content {
+  >* {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.dragdrop-zone {
+  width: 100%;
+  padding: 30px;
+  height: 75px;
+  text-align: center;
+  border: 1px dashed #c1c3c4;
+  p {
+    margin-bottom: 0;
+    color: $secondary-text-color;
+    span {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+}
+
+.file-upload {
+  &:hover {
+    .btn-outline {
+      background: $btn-outline-background-color;
+      border-color: $btn-outline-border-color;
+      color: $btn-outline-font-color;
+      &.btn-default {
+        box-shadow: inset 0 0 0 1px $btn-outline-box-shadow-color;
+      }
+    }
+  }
+}
+
+.file-upload {
+  overflow: hidden;
+  position: relative;
+  input[type="file"] {
+    position: absolute;
+    z-index: 99;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+    border-radius: 14px;
+    color: transparent;
+  }
+}
+
+.file-upload-wrapper {
+  position: relative;
+  @include css3-prefix('flex-direction', 'column');
+  .droppable {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+  }
+}
+
+.gallery-wrapper {
+  overflow-x: hidden;
+  .gallery-image {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-right: 17px;
+    margin-bottom: 20px;
+    background: #f3f5f9;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: top;
+    @include transition(0.1s linear);
+    .image-box {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 50%;
+      }
+    }
+    .overlay {
+      opacity: 0;
+      position: absolute;
+      z-index: 11;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      @include flex();
+      @include css3-prefix('justify-content', 'center');
+      @include css3-prefix('align-items', 'center');
+      @include transition(0.2s linear);
+      cursor: initial;
+      .zoom-btn {
+        width: 27px;
+        cursor: pointer;
+        height: 27px;
+        text-align: center;
+        line-height: 27px;
+        color: $secondary-text-color;
+        background: white;
+        border-radius: 50%;
+        i {
+          font-size: 13px;
+        }
+      }
+    }
+    .image-buttons {
+      opacity: 0;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 99;
+      background: white;
+      padding: 2px 4px;
+      border-radius: 2px;
+      box-sizing: border-box;
+      @include transition(0.2s linear);
+      .form-group {
+        display: none;
+        width: 14px;
+        height: 14px;
+        label {
+          vertical-align: top;
+        }
+      }
+      .favorite-btn {
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: top;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        i {
+          color: #C8CED1;
+        }
+        &.disabled {
+          pointer-events: none;
+          i {
+            color: #CCCCCC;
+          }
+        }
+      }
+      &.favorited {
+        opacity: 1;
+        @include transition(0.2s linear);
+        .form-group {
+          display: none;
+        }
+        .favorite-btn {
+          i {
+            color: $theme-color;
+          }
+        }
+      }
+      &.view-buttons {
+        opacity: 1;
+        .form-group {
+          display: inline-block;
+        }
+        @include transition(0.2s linear);
+      }
+    }
+    &:hover {
+      .image-buttons {
+        .form-group {
+          display: inline-block;
+        }
+      }
+      .overlay,
+      .image-buttons {
+        opacity: 1;
+        @include transition(0.2s linear);
+      }
+    }
+    &.selected {
+      padding: 10px;
+      .image-buttons {
+        .form-group {
+          display: inline-block;
+        }
+      }
+      @include transition(0.1s linear);
+      .image-box {
+        border: 1px solid $theme-color;
+      }
+    }
+  }
+}
+
+.image-viewer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(16, 21, 26, 0.9);
+  z-index: 99999;
+  .button-panel {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+  .image-slider {
+    padding: 60px 100px;
+    @include flex();
+    @include css3-prefix('justify-content', 'center');
+    @include css3-prefix('align-items', 'center');
+    img {
+      max-width: 100%;
+      max-height: 70vh;
+    }
+  }
+  .slider-navigation {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: 0 30px;
+    .btn-prev,
+    .btn-next {
+      background: $secondary-text-color;
+      color: white;
+      &:hover {
+        box-shadow: none;
+        background: darken($secondary-text-color, 5%);
+      }
+    }
+    .btn-prev {
+      float: left;
+    }
+    .btn-next {
+      float: right;
+    }
+  }
+}
+
+.collapsable-block {
+  .block-title {
+    width: 100%;
+    .btn-toggle {
+      text-decoration: none;
+      transition: 0.2s linear;
+      display: block;
+      padding: 0 10px;
+      color: $theme-color;
+      >span {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        vertical-align: top;
+      }
+      i {
+        float: right;
+        transform: rotate(0deg);
+        transition: 0.2s linear;
+        line-height: 14px;
+      }
+      &:hover {
+        color: $theme-color;
+      }
+      &.collapsed {
+        i {
+          transition: 0.2s linear;
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  +.collapsable-block {
+    margin-top: 10px
+  }
+}
+
+.multimedia-photos {
+  width: 100%;
+  position: relative;
+  display: block;
+}
