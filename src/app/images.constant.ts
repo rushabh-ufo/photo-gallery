@@ -5,7 +5,7 @@ export const imagesArray = [
         'Name': '505872990',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/505872990.jpg'
+        'ImageLink': '../assets/505872990.jpg'
     },
     {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -13,7 +13,7 @@ export const imagesArray = [
         'Name': 'download',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download.jpg'
+        'ImageLink': '../assets/download.jpeg'
     },
     {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -21,7 +21,7 @@ export const imagesArray = [
         'Name': 'download1',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download1.jpg'
+        'ImageLink': '../assets/download1.jpeg'
     },
     {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -29,7 +29,7 @@ export const imagesArray = [
         'Name': 'download2',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download2.jpg'
+        'ImageLink': '../assets/download2.jpg'
     },
      {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -45,7 +45,7 @@ export const imagesArray = [
         'Name': 'download',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download.jpg'
+        'ImageLink': '../assets/download.jpeg'
     },
     {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -53,7 +53,7 @@ export const imagesArray = [
         'Name': 'download1',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download1.jpg'
+        'ImageLink': '../assets/download1.jpeg'
     },
     {
         'CreatedDate': '2018-02-26T13:18:33.673Z',
@@ -61,6 +61,6 @@ export const imagesArray = [
         'Name': 'download2',
         'Description': '',
         'FileExtension': 'jpg',
-        'ImageLink': 'https://s3.amazonaws.com/photos-gallery-rrt/download2.jpg'
+        'ImageLink': '../assets/download2.jpg'
     }
 ];
